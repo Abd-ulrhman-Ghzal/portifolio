@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الحاسبة — صفحة 4</title>
+  <meta name="description" content="حاسبة تفاعلية مع تاريخ العمليات" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .calc-wrapper {
+      display: flex; align-items: flex-start; justify-content: center;
+      gap: 2rem; flex-wrap: wrap; padding: 3rem 0;
+    }
+
+    /* Calculator body */
+    .calculator {
+      background: var(--card-bg); border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      border: 1px solid var(--border);
+      width: 320px; overflow: hidden;
+    }
+
+    /* Display */
+    .calc-display {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      padding: 1.5rem 1.3rem 1rem; text-align: left;
+    }
+    .calc-expression {
+      color: rgba(255,255,255,0.5); font-size: 0.9rem;
+      min-height: 1.4rem; letter-spacing: 0.5px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .calc-result {
+      color: #fff; font-size: 2.6rem; font-weight: 700;
+      text-align: right; line-height: 1.1;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    /* Keypad */
+    .calc-keypad { padding: 0.8rem; }
+    .calc-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 0.5rem; }
+    .calc-btn {
+      height: 64px; border: none; border-radius: 12px;
+      font-family: 'Cairo', sans-serif; font-size: 1.1rem; font-weight: 700;
+      cursor: pointer; transition: transform 0.1s, opacity 0.15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .calc-btn:active { transform: scale(0.92); opacity: 0.85; }
+    .btn-number { background: var(--light-bg); color: var(--text); }
+    .btn-number:hover { background: var(--border); }
+    .btn-op { background: rgba(37,99,235,0.12); color: var(--primary); }
+    .btn-op:hover { background: rgba(37,99,235,0.22); }
+    .btn-equals { background: var(--primary); color: #fff; }
+    .btn-equals:hover { background: var(--primary-dark); }
+    .btn-clear { background: rgba(239,68,68,0.12); color: var(--danger); }
+    .btn-clear:hover { background: rgba(239,68,68,0.22); }
+    .btn-special { background: rgba(124,58,237,0.1); color: #7c3aed; }
+    .btn-special:hover { background: rgba(124,58,237,0.2); }
+    .btn-zero { grid-column: span 2; }
+
+    /* History panel */
+    .history-panel {
+      background: var(--card-bg); border-radius: 16px;
+      box-shadow: var(--shadow); border: 1px solid var(--border);
+      width: 260px; padding: 1.2rem;
+    }
+    .history-panel h4 { font-weight: 900; font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .history-list { max-height: 350px; overflow-y: auto; }
+    .history-item {
+      padding: 0.65rem; border-radius: 10px; cursor: pointer;
+      transition: background 0.15s; border-bottom: 1px solid var(--border);
+    }
+    .history-item:hover { background: var(--light-bg); }
+    .history-item:last-child { border-bottom: none; }
+    .hist-expr { font-size: 0.8rem; color: var(--text-muted); }
+    .hist-result { font-weight: 900; font-size: 1.05rem; color: var(--primary); }
+    .no-history { text-align: center; color: var(--text-muted); padding: 2rem 0; font-size: 0.88rem; }
+    .clear-hist-btn {
+      background: none; border: 1px solid var(--border); color: var(--text-muted);
+      border-radius: 6px; padding: 0.2rem 0.6rem; font-size: 0.76rem; cursor: pointer;
+      font-family: 'Cairo',sans-serif;
+    }
+
+    /* Scientific toggle */
+    .mode-toggle {
+      display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem;
+    }
+    .mode-btn {
+      background: var(--card-bg); border: 1.5px solid var(--border);
+      color: var(--text-muted); border-radius: 50px; padding: 0.4rem 1.2rem;
+      font-family: 'Cairo',sans-serif; font-weight: 700; font-size: 0.87rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .mode-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    /* Responsive: stack on mobile */
+    @media (max-width: 700px) { .history-panel { width: 320px; } }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg main-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">⚡ FrontEnd Project</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+        <li class="nav-item"><a class="nav-link" href="page1-portfolio.html">البورتفوليو</a></li>
+        <li class="nav-item"><a class="nav-link" href="page2-blog.html">المدونة</a></li>
+        <li class="nav-item"><a class="nav-link" href="page3-store.html">المتجر</a></li>
+        <li class="nav-item"><a class="nav-link active" href="page4-calculator.html">الحاسبة</a></li>
+        <li class="nav-item"><a class="nav-link" href="page5-form.html">التسجيل</a></li>
+      </ul>
+      <button class="dark-toggle" id="darkToggle">🌙 وضع داكن</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="page-hero" style="background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%)">
+  <div class="container">
+    <h1>🔢 الحاسبة الذكية</h1>
+    <p>حاسبة تفاعلية كاملة مع تاريخ العمليات ودعم لوحة المفاتيح</p>
+  </div>
+</header>
+
+<main>
+  <!-- Mode toggle -->
+  <div class="container pt-4">
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="modeBasic" onclick="setMode('basic')">🔢 أساسية</button>
+      <button class="mode-btn" id="modeSci" onclick="setMode('sci')">🔬 علمية</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="calc-wrapper">
+      <!-- Calculator -->
+      <div class="calculator">
+        <div class="calc-display">
+          <div class="calc-expression" id="expression"></div>
+          <div class="calc-result" id="result">0</div>
+        </div>
+        <div class="calc-keypad">
+          <!-- Row 1: special ops -->
+          <div class="calc-row" id="sciRow" style="display:none;">
+            <button class="calc-btn btn-special" onclick="calcSci('sin')">sin</button>
+            <button class="calc-btn btn-special" onclick="calcSci('cos')">cos</button>
+            <button class="calc-btn btn-special" onclick="calcSci('sqrt')">√</button>
+            <button class="calc-btn btn-special" onclick="calcSci('pow2')">x²</button>
+          </div>
+          <!-- Row 2 -->
+          <div class="calc-row">
+            <button class="calc-btn btn-clear" onclick="clearAll()">AC</button>
+            <button class="calc-btn btn-special" onclick="toggleSign()">+/-</button>
+            <button class="calc-btn btn-special" onclick="percent()">%</button>
+            <button class="calc-btn btn-op" onclick="pressOp('/')">÷</button>
+          </div>
+          <!-- Row 3 -->
+          <div class="calc-row">
+            <button class="calc-btn btn-number" onclick="pressNum('7')">7</button>
+            <button class="calc-btn btn-number" onclick="pressNum('8')">8</button>
+            <button class="calc-btn btn-number" onclick="pressNum('9')">9</button>
+            <button class="calc-btn btn-op" onclick="pressOp('*')">×</button>
+          </div>
+          <!-- Row 4 -->
+          <div class="calc-row">
+            <button class="calc-btn btn-number" onclick="pressNum('4')">4</button>
+            <button class="calc-btn btn-number" onclick="pressNum('5')">5</button>
+            <button class="calc-btn btn-number" onclick="pressNum('6')">6</button>
+            <button class="calc-btn btn-op" onclick="pressOp('-')">−</button>
+          </div>
+          <!-- Row 5 -->
+          <div class="calc-row">
+            <button class="calc-btn btn-number" onclick="pressNum('1')">1</button>
+            <button class="calc-btn btn-number" onclick="pressNum('2')">2</button>
+            <button class="calc-btn btn-number" onclick="pressNum('3')">3</button>
+            <button class="calc-btn btn-op" onclick="pressOp('+')">+</button>
+          </div>
+          <!-- Row 6 -->
+          <div class="calc-row">
+            <button class="calc-btn btn-number btn-zero" onclick="pressNum('0')">0</button>
+            <button class="calc-btn btn-number" onclick="pressDecimal()">.</button>
+            <button class="calc-btn btn-equals" onclick="calculate()">=</button>
+          </div>
+          <!-- Backspace -->
+          <div class="calc-row" style="grid-template-columns:1fr;">
+            <button class="calc-btn btn-special" onclick="backspace()" style="height:46px;font-size:1.3rem;">⌫</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div class="history-panel">
+        <h4>
+          📋 السجل
+          <button class="clear-hist-btn" onclick="clearHistory()">مسح الكل</button>
+        </h4>
+        <div class="history-list" id="historyList">
+          <div class="no-history">لا توجد عمليات بعد</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="main-footer mt-auto">
+  <div class="container">
+    <p>صفحة 4 — الحاسبة &nbsp;|&nbsp; <a href="index.html">← العودة للرئيسية</a></p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/shared.js"></script>
+<script>
+initDarkMode();
+
+let current = '0';
+let storedValue = null;
+let operator = null;
+let justCalculated = false;
+let history = [];
+let mode = 'basic';
+let waitingForSecondOperand = false;
+
+const resultEl = document.getElementById('result');
+const exprEl = document.getElementById('expression');
+
+function updateDisplay(v) { resultEl.textContent = v; }
+
+function pressNum(n) {
+  if (justCalculated) {
+    current = n;
+    justCalculated = false;
+  }
+  else if (waitingForSecondOperand) {
+    current = n;
+    waitingForSecondOperand = false;
+  }
+  else if (current === '0') {
+    current = n;
+  }
+  else {
+    current += n;
+  }
+
+  if (current.length > 12) current = current.slice(0, 12);
+
+  updateDisplay(current);
+}
+
+function pressDecimal() {
+  if (justCalculated) {
+    current = '0.';
+    justCalculated = false;
+  }
+  else if (waitingForSecondOperand) {
+    current = '0.';
+    waitingForSecondOperand = false;
+  }
+  else if (!current.includes('.')) {
+    current += '.';
+  }
+
+  updateDisplay(current);
+}
+
+function pressOp(op) {
+  if (operator && !waitingForSecondOperand) {
+    calculate(true);
+  }
+
+  storedValue = parseFloat(current);
+  operator = op;
+  waitingForSecondOperand = true;
+
+  const opSymbol = {'+':'+', '-':'−', '*':'×', '/':'÷'}[op];
+  exprEl.textContent = `${storedValue} ${opSymbol}`;
+}
+
+function calculate(partial = false) {
+  if (operator === null || storedValue === null) return;
+  const b = parseFloat(current);
+  let result;
+  switch (operator) {
+    case '+': result = storedValue + b; break;
+    case '-': result = storedValue - b; break;
+    case '*': result = storedValue * b; break;
+    case '/': result = b === 0 ? 'خطأ' : storedValue / b; break;
+  }
+  const opS = {'+':'+', '-':'−', '*':'×', '/':'÷'}[operator];
+  const expr = `${storedValue} ${opS} ${b} =`;
+  if (!partial) {
+  exprEl.textContent = expr;
+  addToHistory(expr, result);
+  justCalculated = true;
+  operator = null;
+  storedValue = null;
+  waitingForSecondOperand = false;
+}
+  const formatted = typeof result === 'number' ? parseFloat(result.toFixed(10)).toString() : result;
+  current = formatted;
+  updateDisplay(formatted);
+}
+
+function clearAll() {
+  current = '0'; storedValue = null; operator = null; justCalculated = false;
+  exprEl.textContent = ''; updateDisplay('0');
+}
+
+function backspace() {
+  if (justCalculated || current.length <= 1) { current = '0'; }
+  else current = current.slice(0, -1);
+  updateDisplay(current);
+}
+
+function toggleSign() {
+  current = (parseFloat(current) * -1).toString();
+  updateDisplay(current);
+}
+
+function percent() {
+  current = (parseFloat(current) / 100).toString();
+  updateDisplay(current);
+}
+
+function calcSci(fn) {
+  const n = parseFloat(current);
+  let result;
+  switch (fn) {
+    case 'sin': result = Math.sin(n * Math.PI / 180); break;
+    case 'cos': result = Math.cos(n * Math.PI / 180); break;
+    case 'sqrt': result = n < 0 ? 'خطأ' : Math.sqrt(n); break;
+    case 'pow2': result = n * n; break;
+  }
+  const formatted = typeof result === 'number' ? parseFloat(result.toFixed(8)).toString() : result;
+  addToHistory(`${fn}(${n})`, formatted);
+  current = formatted;
+  exprEl.textContent = `${fn}(${n}) =`;
+  updateDisplay(formatted);
+  justCalculated = true;
+}
+
+function addToHistory(expr, result) {
+  history.unshift({ expr, result });
+  if (history.length > 20) history.pop();
+  renderHistory();
+}
+
+function renderHistory() {
+  const el = document.getElementById('historyList');
+  if (history.length === 0) { el.innerHTML = '<div class="no-history">لا توجد عمليات بعد</div>'; return; }
+  el.innerHTML = history.map(h => `
+    <div class="history-item" onclick="loadHistoryResult('${h.result}')">
+      <div class="hist-expr">${h.expr}</div>
+      <div class="hist-result">${h.result}</div>
+    </div>`).join('');
+}
+
+function loadHistoryResult(val) {
+  current = val.toString();
+  justCalculated = true;
+  updateDisplay(current);
+  showToast('📋 تم تحميل النتيجة');
+}
+
+function clearHistory() {
+  history = [];
+  renderHistory();
+  showToast('🗑️ تم مسح السجل');
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('modeBasic').classList.toggle('active', m === 'basic');
+  document.getElementById('modeSci').classList.toggle('active', m === 'sci');
+  document.getElementById('sciRow').style.display = m === 'sci' ? 'grid' : 'none';
+}
+
+// Keyboard support
+document.addEventListener('keydown', e => {
+  if (e.key >= '0' && e.key <= '9') pressNum(e.key);
+  else if (e.key === '.') pressDecimal();
+  else if (['+','-','*','/'].includes(e.key)) pressOp(e.key);
+  else if (e.key === 'Enter' || e.key === '=') calculate();
+  else if (e.key === 'Backspace') backspace();
+  else if (e.key === 'Escape') clearAll();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>البورتفوليو الشخصي — صفحة 1</title>
+  <meta name="description" content="السيرة الذاتية التفاعلية مع وضع ليلي ونهاري" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Profile hero */
+    .profile-hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      padding: 4rem 0 3rem; color: #fff; text-align: center;
+    }
+    .avatar {
+      width: 110px; height: 110px; border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #7c3aed);
+      margin: 0 auto 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; box-shadow: 0 0 0 5px rgba(255,255,255,0.15);
+    }
+    .profile-name { font-size: 2rem; font-weight: 900; margin-bottom: 0.3rem; }
+    .profile-title { opacity: 0.8; font-size: 1rem; margin-bottom: 1.2rem; }
+    .social-btns { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+    .social-btn {
+      background: rgba(255,255,255,0.12); color: #fff;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 50px; padding: 0.4rem 1.1rem;
+      text-decoration: none; font-size: 0.87rem; font-weight: 600;
+      transition: background 0.2s;
+    }
+    .social-btn:hover { background: rgba(255,255,255,0.25); color: #fff; }
+
+    /* Skill bars */
+    .skill-bar-wrap { margin-bottom: 1.1rem; }
+    .skill-label { display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.35rem; }
+    .skill-track { height: 8px; background: var(--border); border-radius: 50px; overflow: hidden; }
+    .skill-fill {
+      height: 100%; border-radius: 50px;
+      background: linear-gradient(90deg, var(--primary), #7c3aed);
+      width: 0; transition: width 1.1s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* Project cards */
+    .proj-card { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; height: 100%; }
+    .proj-thumb { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
+    .proj-body { padding: 1.2rem; }
+    .proj-body h5 { font-weight: 900; margin-bottom: 0.3rem; }
+    .proj-body p { font-size: 0.87rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .proj-tag { background: rgba(37,99,235,0.1); color: var(--primary); border-radius: 50px; padding: 0.15rem 0.65rem; font-size: 0.76rem; font-weight: 700; }
+
+    /* Timeline */
+    .timeline { position: relative; padding-right: 2rem; }
+    .timeline::before { content:''; position:absolute; top:0; bottom:0; right:8px; width:2px; background: var(--border); }
+    .tl-item { position: relative; margin-bottom: 1.8rem; }
+    .tl-dot { position:absolute; right:-2rem; top:4px; width:18px; height:18px; border-radius:50%; background: var(--primary); border:3px solid var(--card-bg); box-shadow:0 0 0 2px var(--primary); }
+    .tl-date { font-size:0.78rem; color: var(--text-muted); font-weight:700; margin-bottom:0.25rem; }
+    .tl-title { font-weight:900; margin-bottom:0.2rem; }
+    .tl-sub { font-size:0.87rem; color: var(--text-muted); }
+
+    /* Contact section */
+    .contact-info { display:flex; flex-direction:column; gap:0.7rem; }
+    .contact-item { display:flex; align-items:center; gap:0.7rem; font-size:0.9rem; }
+    .contact-item .ci-icon { font-size:1.2rem; width:36px; text-align:center; }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg main-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">⚡ FrontEnd Project</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+        <li class="nav-item"><a class="nav-link active" href="page1-portfolio.html">البورتفوليو</a></li>
+        <li class="nav-item"><a class="nav-link" href="page2-blog.html">المدونة</a></li>
+        <li class="nav-item"><a class="nav-link" href="page3-store.html">المتجر</a></li>
+        <li class="nav-item"><a class="nav-link" href="page4-calculator.html">الحاسبة</a></li>
+        <li class="nav-item"><a class="nav-link" href="page5-form.html">التسجيل</a></li>
+      </ul>
+      <button class="dark-toggle" id="darkToggle">🌙 وضع داكن</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Profile Hero -->
+<header class="profile-hero">
+  <div class="container">
+    <div class="avatar">👤</div>
+    <h1 class="profile-name">عبد الرحمن غزال</h1>
+    <p class="profile-title">مطور واجهات أمامية | Front-End Developer - مطور تطبيقات موبايل | Flutter</p>
+    <div class="social-btns">
+      <a href="https://www.linkedin.com/in/abd-alrhman-ghzal-190549294" class="social-btn">💼 LinkedIn</a>
+      <a href="https://github.com/Abd-ulrhman-Ghzal" class="social-btn">🐙 GitHub</a>
+      <a href="#contact" class="social-btn">✉️ تواصل معي</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- About + Skills -->
+  <section class="section-gap">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <h2 class="section-title">نبذة <span>عني</span></h2>
+          <p class="section-subtitle">من أنا وماذا أقدم</p>
+          <p style="color:var(--text); font-size:0.95rem; margin-bottom:1.2rem;">
+            مطور ويب شغوف بتصميم تجارب مستخدم استثنائية، أمتلك خبرة في بناء تطبيقات ويب حديثة وسريعة ومتجاوبة مع جميع الأجهزة.
+          </p>
+          <p style="color:var(--text-muted); font-size:0.92rem;">
+            أؤمن بأن الكود الجيد هو كود يمكن قراءته وصيانته بسهولة، وأسعى دائماً إلى تحسين الأداء وتجربة المستخدم.
+          </p>
+        </div>
+        <div class="col-lg-6">
+          <h2 class="section-title">المهارات <span>التقنية</span></h2>
+          <p class="section-subtitle">مستوى إتقاني لكل تقنية</p>
+          <div id="skillBars">
+            <div class="skill-bar-wrap">
+              <div class="skill-label"><span>HTML5 / CSS3</span><span>90%</span></div>
+              <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
+            </div>
+            <div class="skill-bar-wrap">
+              <div class="skill-label"><span>JavaScript</span><span>95%</span></div>
+              <div class="skill-track"><div class="skill-fill" data-width="95"></div></div>
+            </div>
+            <div class="skill-bar-wrap">
+              <div class="skill-label"><span>Bootstrap 5</span><span>80%</span></div>
+              <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
+            </div>
+            <div class="skill-bar-wrap">
+              <div class="skill-label"><span>React.js</span><span>95%</span></div>
+              <div class="skill-track"><div class="skill-fill" data-width="95"></div></div>
+            </div>
+            <div class="skill-bar-wrap">
+              <div class="skill-label"><span>Git / GitHub</span><span>90%</span></div>
+              <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section-gap" style="background:var(--light-bg);">
+    <div class="container">
+      <h2 class="section-title text-center">أبرز <span>المشاريع</span></h2>
+      <p class="section-subtitle text-center">أعمال طورتها في مسيرتي البرمجية</p>
+      <div class="row g-4" id="projectsGrid">
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Timeline -->
+  <section class="section-gap">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <h2 class="section-title">المسيرة <span>المهنية</span></h2>
+          <p class="section-subtitle">خبراتي العملية</p>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-date">2022 — 2023</div>
+              <div class="tl-title">متدرب ويب — ستارت أب ناشئة</div>
+              <div class="tl-sub">المشاركة في تطوير مواقع ويب تفاعلية باستخدام React JS.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-date">2024 — حتى الآن</div>
+              <div class="tl-title">مستقل — Freelancer</div>
+              <div class="tl-sub">تنفيذ مشاريع مواقع صغيرة ومتوسطة للعملاء.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6" id="contact">
+          <h2 class="section-title">تواصل <span>معي</span></h2>
+          <p class="section-subtitle">يسعدني سماع أفكارك</p>
+          <div class="contact-info custom-card p-4">
+            <div class="contact-item"><span class="ci-icon">📧</span><span>abdgh890@gmail.com</span></div>
+            <div class="contact-item"><span class="ci-icon">📱</span><span>338 94 9970 963+</span></div>
+            <div class="contact-item"><span class="ci-icon">📍</span><span>سوريا، دمشق</span></div>
+            <div class="contact-item"><span class="ci-icon">🌐</span><span>https://github.com/Abd-ulrhman-Ghzal</span></div>
+            <div class="mt-3">
+              <button class="btn-primary-custom w-100" onclick="handleContact()">✉️ أرسل رسالة</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="main-footer mt-auto">
+  <div class="container">
+    <p>صفحة 1 — البورتفوليو الشخصي &nbsp;|&nbsp; <a href="index.html">← العودة للرئيسية</a></p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/shared.js"></script>
+<script>
+initDarkMode();
+
+// ---- Projects Data ----
+const projects = [
+  { emoji: '🛒', bg: '#dbeafe', title: 'تطبيق متجر إلكتروني', desc: 'تطبيق تسوق كامل مع سلة تسوق وصفحات منتجات تفاعلية.', tags: ['Dart','Flutter','GetX'] },
+  { emoji: '📊', bg: '#dcfce7', title: 'موقع استئجار سيارات', desc: 'موقع لاستئجار السيارات يعرض صور وبيانات السيارات بشكل مرئي.', tags: ['HTML5','ٌTailwind','ٌReact JS'] },
+  { emoji: '📱', bg: '#fef3c7', title: 'تطبيق مهام', desc: 'قائمة مهام تفاعلية مع التحرير والحذف والفلترة.', tags: ['JavaScript','LocalStorage'] },
+  { emoji: '🌐', bg: '#ede9fe', title: 'موقع شركة تأجير غرف', desc: 'موقع مؤسسي متجاوب مع صفحات متعددة ونموذج تواصل لايجاد غرف للايجار بلاضافة لايجاد زملاء للعيش', tags: ['HTML5','CSS3','Bootstrap'] },
+  { emoji: '📝', bg: '#f0f9ff', title: 'تطبيق حجز مواعيد', desc: 'تطبيق لحجز مواعيد المرضى لدى دكاترة معتمدة مع ادارة عملية التحاليل.', tags: ['Dart','Flutter','API integration','Bloc'] },
+];
+
+const grid = document.getElementById('projectsGrid');
+projects.forEach(p => {
+  grid.innerHTML += `
+    <div class="col-sm-6 col-lg-4">
+      <div class="proj-card custom-card">
+        <div class="proj-thumb" style="background:${p.bg}">${p.emoji}</div>
+        <div class="proj-body">
+          <h5>${p.title}</h5>
+          <p>${p.desc}</p>
+          <div class="proj-tags">${p.tags.map(t=>`<span class="proj-tag">${t}</span>`).join('')}</div>
+        </div>
+      </div>
+    </div>`;
+});
+
+// ---- Animate Skill Bars on scroll ----
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.skill-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width + '%';
+      });
+      observer.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+observer.observe(document.getElementById('skillBars'));
+
+// ---- Contact button ----
+function handleContact() {
+  showToast('✅ سيتم الانتقال إلى نموذج التواصل!');
+  setTimeout(() => window.location.href = 'page5-form.html', 1200);
+}
+</script>
+</body>
+</html>

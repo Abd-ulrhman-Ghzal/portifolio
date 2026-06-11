@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المدونة — صفحة 2</title>
+  <meta name="description" content="مدونة بسيطة مع فلترة تفاعلية وقراءة مزيد" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Filter pills */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; }
+    .filter-btn {
+      background: var(--card-bg); border: 1.5px solid var(--border);
+      color: var(--text-muted); border-radius: 50px; padding: 0.4rem 1.1rem;
+      font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 0.87rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--primary); border-color: var(--primary); color: #fff;
+    }
+
+    /* Blog card */
+    .blog-card {
+      background: var(--card-bg); border-radius: var(--radius);
+      box-shadow: var(--shadow); border: 1px solid var(--border);
+      overflow: hidden; height: 100%; display: flex; flex-direction: column;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .blog-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(37,99,235,0.13); }
+    .blog-thumb {
+      height: 130px; display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+    }
+    .blog-body { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; }
+    .blog-meta { display: flex; align-items: center; gap: 0.6rem; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+    .blog-cat {
+      background: rgba(37,99,235,0.1); color: var(--primary);
+      border-radius: 50px; padding: 0.15rem 0.65rem; font-size: 0.76rem; font-weight: 700;
+    }
+    .blog-title { font-weight: 900; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--text); }
+    .blog-excerpt { font-size: 0.87rem; color: var(--text-muted); flex: 1; margin-bottom: 1rem; }
+    .blog-excerpt .more-text { display: none; }
+    .blog-excerpt .more-text.shown { display: inline; }
+    .read-more-btn {
+      background: none; border: 1.5px solid var(--primary); color: var(--primary);
+      border-radius: 8px; padding: 0.4rem 1rem; font-family: 'Cairo',sans-serif;
+      font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
+      align-self: flex-start;
+    }
+    .read-more-btn:hover { background: var(--primary); color: #fff; }
+
+    /* Featured post */
+    .featured-post {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      border-radius: var(--radius); color: #fff; padding: 2.5rem;
+      margin-bottom: 2.5rem; position: relative; overflow: hidden;
+    }
+    .featured-post::before {
+      content: '✍️'; position: absolute; left: 1.5rem; top: 50%;
+      transform: translateY(-50%); font-size: 5rem; opacity: 0.08;
+    }
+    .featured-badge { background: #fbbf24; color: #000; border-radius: 50px; padding: 0.2rem 0.8rem; font-size: 0.78rem; font-weight: 900; display: inline-block; margin-bottom: 0.7rem; }
+    .featured-post h2 { font-weight: 900; font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .featured-post p { opacity: 0.8; font-size: 0.93rem; max-width: 480px; margin-bottom: 1.2rem; }
+    .featured-post .read-btn { background: #fff; color: #0f172a; border: none; border-radius: 8px; padding: 0.55rem 1.4rem; font-family: 'Cairo',sans-serif; font-weight: 700; cursor: pointer; }
+
+    /* No results */
+    .no-results { text-align: center; color: var(--text-muted); padding: 3rem 0; display: none; }
+    .no-results.visible { display: block; }
+
+    /* Counter */
+    .posts-counter { font-size: 0.88rem; color: var(--text-muted); text-align: center; margin-bottom: 1.5rem; }
+    .posts-counter span { color: var(--primary); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg main-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">⚡ FrontEnd Project</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html">الرئيسية</a></li>
+        <li class="nav-item"><a class="nav-link" href="page1-portfolio.html">البورتفوليو</a></li>
+        <li class="nav-item"><a class="nav-link active" href="page2-blog.html">المدونة</a></li>
+        <li class="nav-item"><a class="nav-link" href="page3-store.html">المتجر</a></li>
+        <li class="nav-item"><a class="nav-link" href="page4-calculator.html">الحاسبة</a></li>
+        <li class="nav-item"><a class="nav-link" href="page5-form.html">التسجيل</a></li>
+      </ul>
+      <button class="dark-toggle" id="darkToggle">🌙 وضع داكن</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="page-hero">
+  <div class="container">
+    <h1>📝 المدونة</h1>
+    <p>مقالات تقنية متنوعة في تطوير الويب وأفضل الممارسات البرمجية</p>
+  </div>
+</header>
+
+<main class="section-gap">
+  <div class="container">
+
+    <!-- Featured post -->
+    <div class="featured-post">
+      <span class="featured-badge">⭐ مقال مميز</span>
+      <h2>كيف تصبح مطور Front-End محترفاً في 2024؟</h2>
+      <p>دليل شامل يرشدك خطوة بخطوة من المبتدئ إلى المحترف في تطوير واجهات الويب الحديثة.</p>
+      <button class="read-btn" onclick="showToast('🚀 جاري فتح المقال...')">قراءة المقال ←</button>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-cat="all">🌐 الكل</button>
+      <button class="filter-btn" data-cat="html-css">🎨 HTML & CSS</button>
+      <button class="filter-btn" data-cat="javascript">⚡ JavaScript</button>
+      <button class="filter-btn" data-cat="tools">🛠️ أدوات</button>
+      <button class="filter-btn" data-cat="tips">💡 نصائح</button>
+    </div>
+
+    <!-- Posts counter -->
+    <p class="posts-counter">عرض <span id="visibleCount">0</span> مقال</p>
+
+    <!-- Cards -->
+    <div class="row g-4" id="blogsGrid"></div>
+    <div class="no-results" id="noResults">
+      <div style="font-size:3rem;">🔍</div>
+      <p class="mt-2">لا توجد مقالات في هذه الفئة</p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="main-footer mt-auto">
+  <div class="container">
+    <p>صفحة 2 — المدونة &nbsp;|&nbsp; <a href="index.html">← العودة للرئيسية</a></p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/shared.js"></script>
+<script>
+initDarkMode();
+
+const posts = [
+  { cat:'html-css', emoji:'🎨', bg:'#dbeafe', date:'15 يناير 2024', title:'أسرار CSS Grid التي لا يعرفها الجميع', excerpt:'CSS Grid يُعدّ من أقوى أدوات التخطيط في الويب الحديث. في هذا المقال سنكتشف...', more:'...أسراراً وتقنيات لم تتخيلها! من المحاذاة الدقيقة إلى الشبكات المتداخلة، ستتعلم كيف تبني تصاميم مذهلة.' },
+  { cat:'javascript', emoji:'⚡', bg:'#fef3c7', date:'22 يناير 2024', title:'Async/Await شرح بالأمثلة العملية', excerpt:'التعامل مع العمليات غير المتزامنة في JavaScript كان دائماً مصدر ارتباك للمبتدئين...', more:'...لكن مع Async/Await أصبح الأمر أبسط بكثير. سنتعرف على Promises والكيفية الصحيحة للتعامل مع الأخطاء.' },
+  { cat:'tools', emoji:'🛠️', bg:'#dcfce7', date:'1 فبراير 2024', title:'أفضل إضافات VS Code لمطوري الويب', excerpt:'محرر VS Code يحتوي على آلاف الإضافات، لكن أيها يستحق التثبيت فعلاً؟...', more:'...هنا قائمتي المختارة التي ترفع إنتاجيتك بشكل ملحوظ: Prettier, ESLint, GitLens والمزيد.' },
+  { cat:'tips', emoji:'💡', bg:'#ede9fe', date:'8 فبراير 2024', title:'10 أخطاء يقع فيها مطورو الويب المبتدئون', excerpt:'في رحلتك كمطور ويب ستقع في بعض الأخطاء الشائعة، والخبر السار أن بإمكانك تجنبها...', more:'...منها: عدم التعليق على الكود، تكرار نفس الكود بدل استخدام الدوال، وإهمال أداء الموقع.' },
+  { cat:'html-css', emoji:'📱', bg:'#fce7f3', date:'14 فبراير 2024', title:'دليل التصميم المتجاوب مع Bootstrap 5', excerpt:'Bootstrap 5 هو إطار العمل الأكثر استخداماً في الويب، وفي هذا المقال...', more:'...سنتناول نظام الشبكة Grid بعمق، والكلاسات المدمجة، وكيفية تخصيص Bootstrap لمشروعك.' },
+  { cat:'javascript', emoji:'🔧', bg:'#f0fdf4', date:'20 فبراير 2024', title:'مكتبة DOM: كل ما تحتاج معرفته', excerpt:'التحكم في DOM هو قلب JavaScript في المتصفح. تعلّم كيف تختار العناصر وتعدّلها...', more:'...وتضيف أحداثاً وتُنشئ عناصر جديدة ديناميكياً، مع أمثلة عملية لكل حالة.' },
+];
+
+let currentCat = 'all';
+
+function renderPosts() {
+  const grid = document.getElementById('blogsGrid');
+  const noRes = document.getElementById('noResults');
+  const filtered = currentCat === 'all' ? posts : posts.filter(p => p.cat === currentCat);
+
+  document.getElementById('visibleCount').textContent = filtered.length;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    noRes.classList.add('visible');
+    return;
+  }
+  noRes.classList.remove('visible');
+
+  grid.innerHTML = filtered.map((p, i) => `
+    <div class="col-sm-6 col-lg-4">
+      <article class="blog-card">
+        <div class="blog-thumb" style="background:${p.bg}">${p.emoji}</div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <span class="blog-cat">${catLabel(p.cat)}</span>
+            <span>📅 ${p.date}</span>
+          </div>
+          <h2 class="blog-title">${p.title}</h2>
+          <p class="blog-excerpt">
+            ${p.excerpt}
+            <span class="more-text" id="more-${i}">${p.more}</span>
+          </p>
+          <button class="read-more-btn" id="btn-${i}" onclick="toggleMore(${i})">قراءة المزيد +</button>
+        </div>
+      </article>
+    </div>`).join('');
+}
+
+function catLabel(c) {
+  const m = { 'html-css':'🎨 HTML & CSS', 'javascript':'⚡ JavaScript', 'tools':'🛠️ أدوات', 'tips':'💡 نصائح' };
+  return m[c] || c;
+}
+
+function toggleMore(i) {
+  const span = document.getElementById(`more-${i}`);
+  const btn = document.getElementById(`btn-${i}`);
+  const shown = span.classList.toggle('shown');
+  btn.textContent = shown ? 'إخفاء ↑' : 'قراءة المزيد +';
+  if (shown) showToast('📖 تم تحميل المقال كاملاً');
+}
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    renderPosts();
+  });
+});
+
+renderPosts();
+</script>
+</body>
+</html>
